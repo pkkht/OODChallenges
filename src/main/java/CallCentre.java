@@ -37,9 +37,7 @@ public class CallCentre {
     }
 
     public  List<Employee> getEmployeesByRole(EmployeeRole employeeRole, boolean availabilityStatus){
-        List<Employee> filteredEmployeesByRole = employeeAvailabilityStatusList.stream().map(e-> e.getEmployeeBasedOnRole(e, employeeRole, availabilityStatus))
-                                                    .collect(Collectors.toList());
-        return filteredEmployeesByRole;
+        return employeeAvailabilityStatusList.stream().map(e-> e.getEmployeeBasedOnRole(e, employeeRole, availabilityStatus)).toList();
     }
 
     private List<Employee> findAvailableEmployees(){
@@ -70,7 +68,7 @@ public class CallCentre {
         Employee e = allAvailableEmployees
                 .stream()
                 .filter(o -> o != null)
-                .findFirst().get();
+                .findFirst().orElse(new Employee());
 
         int index =
                 IntStream.range(0, employeeAvailabilityStatusList.size())
@@ -108,6 +106,10 @@ enum EmployeeRole {
 class Employee {
     private int employeeId;
     private EmployeeRole employeeRole;
+
+    public Employee(){
+
+    }
 
     public Employee(int id, EmployeeRole employeeRole, boolean availabilityStatus) {
         this.employeeId = id;
